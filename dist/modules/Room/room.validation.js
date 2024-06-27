@@ -24,6 +24,17 @@ const roomValidationSchema = zod_1.z.object({
         })),
     }),
 });
+const updateRoomValidationSchema = zod_1.z.object({
+    body: zod_1.z.object({
+        name: zod_1.z.string().optional(),
+        roomNo: zod_1.z.number().optional(),
+        floorNo: zod_1.z.number().optional(),
+        capacity: zod_1.z.number().optional(),
+        pricePerSlot: zod_1.z.number().optional(),
+        amenities: zod_1.z.array(zod_1.z.string()).optional(),
+    }),
+});
 exports.RoomValidations = {
     roomValidationSchema,
+    updateRoomValidationSchema
 };

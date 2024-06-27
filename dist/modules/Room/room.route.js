@@ -12,4 +12,5 @@ const router = (0, express_1.Router)();
 router.post('/', (0, validateRequest_1.default)(room_validation_1.RoomValidations.roomValidationSchema), room_controller_1.RoomControllers.createRoom);
 router.get('/:id', room_controller_1.RoomControllers.getSingleRoom);
 router.get('/', room_controller_1.RoomControllers.getAllRoom);
+router.put('/:id', (0, validateRequest_1.default)(room_validation_1.RoomValidations.updateRoomValidationSchema), room_controller_1.RoomControllers.updateRoom);
 exports.roomRoute = router;

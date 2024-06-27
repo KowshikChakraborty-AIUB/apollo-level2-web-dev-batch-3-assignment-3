@@ -19,7 +19,7 @@ const getSingleRoom = catchAsync(async (req, res) => {
     const { id } = req.params;
     const result = await RoomServices.getSingleRoomFromDB(id);
     //console.log(result);
-    
+
 
     if (result === null) {
         sendResponse(res, noDataFound('No Data Found'))
@@ -54,8 +54,21 @@ const getAllRoom = catchAsync(async (req, res) => {
 
 });
 
+const updateRoom = catchAsync(async (req, res) => {
+    const { id } = req.params;
+
+    const result = await RoomServices.updateRoomIntoDB(id, req.body);
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: 'Room updated successfully',
+        data: result,
+    });
+});
+
 export const RoomControllers = {
     createRoom,
     getSingleRoom,
     getAllRoom,
+    updateRoom,
 }
