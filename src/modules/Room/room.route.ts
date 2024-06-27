@@ -14,4 +14,6 @@ router.post(
 
 router.get('/:id', RoomControllers.getSingleRoom);
 
+router.get('/', RoomControllers.getAllRoom);
+
 export const roomRoute = router;

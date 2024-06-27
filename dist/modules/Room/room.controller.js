@@ -29,7 +29,22 @@ const createRoom = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
 const getSingleRoom = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const result = yield room_service_1.RoomServices.getSingleRoomFromDB(id);
-    if (!result) {
+    //console.log(result);
+    if (result === null) {
+        (0, sendResponse_1.default)(res, (0, room_error_1.default)('No Data Found'));
+    }
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: 200,
+        message: 'Room retrieved successfully',
+        data: result,
+    });
+}));
+const getAllRoom = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield room_service_1.RoomServices.getAllRoomFromDB();
+    //console.log(result);
+    //console.log(result.length);
+    if (result.length === 0) {
         (0, sendResponse_1.default)(res, (0, room_error_1.default)('No Data Found'));
     }
     (0, sendResponse_1.default)(res, {
@@ -42,4 +57,5 @@ const getSingleRoom = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
 exports.RoomControllers = {
     createRoom,
     getSingleRoom,
+    getAllRoom,
 };

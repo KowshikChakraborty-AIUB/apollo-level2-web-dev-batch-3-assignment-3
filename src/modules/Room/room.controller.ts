@@ -18,8 +18,30 @@ const createRoom = catchAsync(async (req, res) => {
 const getSingleRoom = catchAsync(async (req, res) => {
     const { id } = req.params;
     const result = await RoomServices.getSingleRoomFromDB(id);
+    //console.log(result);
+    
 
-    if(!result){
+    if (result === null) {
+        sendResponse(res, noDataFound('No Data Found'))
+    }
+
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: 'Room retrieved successfully',
+        data: result,
+    });
+
+});
+
+
+const getAllRoom = catchAsync(async (req, res) => {
+    const result = await RoomServices.getAllRoomFromDB();
+
+    //console.log(result);
+    //console.log(result.length);
+
+    if (result.length === 0) {
         sendResponse(res, noDataFound('No Data Found'))
     }
 
@@ -35,4 +57,5 @@ const getSingleRoom = catchAsync(async (req, res) => {
 export const RoomControllers = {
     createRoom,
     getSingleRoom,
+    getAllRoom,
 }

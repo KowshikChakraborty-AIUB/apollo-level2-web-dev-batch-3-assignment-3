@@ -19,7 +19,12 @@ const getSingleRoomFromDB = (id) => __awaiter(void 0, void 0, void 0, function* 
     const result = yield room_model_1.Room.findById(id);
     return result;
 });
+const getAllRoomFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = room_model_1.Room.find();
+    return result;
+});
 exports.RoomServices = {
     createRoomIntoDB,
     getSingleRoomFromDB,
+    getAllRoomFromDB,
 };
