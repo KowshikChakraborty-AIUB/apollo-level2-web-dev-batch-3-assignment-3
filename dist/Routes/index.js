@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const user_route_1 = require("../modules/User/user.route");
 const router = (0, express_1.Router)();
 const moduleRoutes = [
     {
         path: '/auth',
-        route: Route,
+        route: user_route_1.userRoute,
     },
 ];
 moduleRoutes.forEach((route) => router.use(route.path, route.route));
