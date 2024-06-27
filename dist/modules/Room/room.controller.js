@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RoomControllers = void 0;
 const catchAsync_1 = __importDefault(require("../../Utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../Utils/sendResponse"));
+const room_error_1 = __importDefault(require("./room.error"));
 const room_service_1 = require("./room.service");
 const createRoom = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield room_service_1.RoomServices.createRoomIntoDB(req.body);
@@ -25,6 +26,20 @@ const createRoom = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
         data: result,
     });
 }));
+const getSingleRoom = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield room_service_1.RoomServices.getSingleRoomFromDB(id);
+    if (!result) {
+        (0, sendResponse_1.default)(res, (0, room_error_1.default)('No Data Found'));
+    }
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: 200,
+        message: 'Rooms retrieved successfully',
+        data: result,
+    });
+}));
 exports.RoomControllers = {
     createRoom,
+    getSingleRoom,
 };

@@ -15,6 +15,11 @@ const createRoomIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function
     const result = room_model_1.Room.create(payload);
     return result;
 });
+const getSingleRoomFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield room_model_1.Room.findById(id);
+    return result;
+});
 exports.RoomServices = {
     createRoomIntoDB,
+    getSingleRoomFromDB,
 };
