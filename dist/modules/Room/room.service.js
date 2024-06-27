@@ -39,9 +39,18 @@ const updateRoomIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, func
     });
     return result;
 });
+const deleteRoomFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const roomData = yield room_model_1.Room.findById(id);
+    if (!roomData) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Room does not exist');
+    }
+    const result = yield room_model_1.Room.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
+    return result;
+});
 exports.RoomServices = {
     createRoomIntoDB,
     getSingleRoomFromDB,
     getAllRoomFromDB,
     updateRoomIntoDB,
+    deleteRoomFromDB
 };

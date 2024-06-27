@@ -13,4 +13,5 @@ router.post('/', (0, validateRequest_1.default)(room_validation_1.RoomValidation
 router.get('/:id', room_controller_1.RoomControllers.getSingleRoom);
 router.get('/', room_controller_1.RoomControllers.getAllRoom);
 router.put('/:id', (0, validateRequest_1.default)(room_validation_1.RoomValidations.updateRoomValidationSchema), room_controller_1.RoomControllers.updateRoom);
+router.delete('/:id', room_controller_1.RoomControllers.deleteRoom);
 exports.roomRoute = router;

@@ -32,9 +32,25 @@ const updateRoomIntoDB = async (id: string, payload: Partial<TRoom>) => {
     return result;
 };
 
+const deleteRoomFromDB = async (id: string) => {
+    const roomData = await Room.findById(id);
+
+    if (!roomData) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Room does not exist');
+    }
+
+    const result = await Room.findByIdAndUpdate(
+        id,
+        { isDeleted: true },
+        { new: true },
+    );
+    return result;
+};
+
 export const RoomServices = {
     createRoomIntoDB,
     getSingleRoomFromDB,
     getAllRoomFromDB,
     updateRoomIntoDB,
+    deleteRoomFromDB
 }
