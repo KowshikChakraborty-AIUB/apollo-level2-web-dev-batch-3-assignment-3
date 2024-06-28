@@ -33,6 +33,9 @@ const updateRoomIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, func
     if (!roomData) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Room does not exist');
     }
+    if ((roomData === null || roomData === void 0 ? void 0 : roomData.isDeleted) === true) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Room deleted');
+    }
     const result = yield room_model_1.Room.findByIdAndUpdate(id, payload, {
         new: true,
         runValidators: true,
@@ -43,6 +46,9 @@ const deleteRoomFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () 
     const roomData = yield room_model_1.Room.findById(id);
     if (!roomData) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Room does not exist');
+    }
+    if ((roomData === null || roomData === void 0 ? void 0 : roomData.isDeleted) === true) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Room already deleted');
     }
     const result = yield room_model_1.Room.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
     return result;

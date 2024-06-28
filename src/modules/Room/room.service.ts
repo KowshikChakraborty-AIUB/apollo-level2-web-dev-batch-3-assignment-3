@@ -25,6 +25,10 @@ const updateRoomIntoDB = async (id: string, payload: Partial<TRoom>) => {
         throw new AppError(httpStatus.NOT_FOUND, 'Room does not exist');
     }
 
+    if (roomData?.isDeleted === true) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Room deleted');
+    }
+
     const result = await Room.findByIdAndUpdate(id, payload, {
         new: true,
         runValidators: true,
@@ -37,6 +41,10 @@ const deleteRoomFromDB = async (id: string) => {
 
     if (!roomData) {
         throw new AppError(httpStatus.NOT_FOUND, 'Room does not exist');
+    }
+
+    if (roomData?.isDeleted === true) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Room already deleted');
     }
 
     const result = await Room.findByIdAndUpdate(
