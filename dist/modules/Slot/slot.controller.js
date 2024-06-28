@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SlotControllers = void 0;
 const catchAsync_1 = __importDefault(require("../../Utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../Utils/sendResponse"));
+const room_error_1 = __importDefault(require("../Room/room.error"));
 const slot_service_1 = require("./slot.service");
 const createSlots = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield slot_service_1.SlotServices.createSlotsIntoDB(req.body);
@@ -25,6 +26,19 @@ const createSlots = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
         data: result,
     });
 }));
+const getAllSlots = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield slot_service_1.SlotServices.getAllSlotsFromDB(req.query);
+    if (result.length === 0) {
+        (0, sendResponse_1.default)(res, (0, room_error_1.default)('No Data Found'));
+    }
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: 200,
+        message: 'Available slots retrieved successfully',
+        data: result,
+    });
+}));
 exports.SlotControllers = {
     createSlots,
+    getAllSlots,
 };

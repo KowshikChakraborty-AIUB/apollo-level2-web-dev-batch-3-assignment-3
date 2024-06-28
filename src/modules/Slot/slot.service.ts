@@ -83,6 +83,21 @@ const createSlotsIntoDB = async (payload: Required<TSlot>): Promise<TSlot[]> => 
 };
 
 
+const getAllSlotsFromDB = async (query: Record<string, unknown>) => {
+    const { date, roomId } = query;
+
+    const roomData = await Room.findById(roomId);
+
+    if (roomData?.isDeleted === true) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Room deleted');
+    }
+
+    const result = await Slot.find({ room: roomId, date: date }).populate('room');
+    return result;
+};
+
+
 export const SlotServices = {
     createSlotsIntoDB,
+    getAllSlotsFromDB,
 };

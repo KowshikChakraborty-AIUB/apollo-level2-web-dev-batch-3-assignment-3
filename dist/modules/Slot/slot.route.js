@@ -10,4 +10,5 @@ const slot_validation_1 = __importDefault(require("./slot.validation"));
 const slot_controller_1 = require("./slot.controller");
 const router = (0, express_1.Router)();
 router.post('/', (0, validateRequest_1.default)(slot_validation_1.default), slot_controller_1.SlotControllers.createSlots);
+router.get('/availability', slot_controller_1.SlotControllers.getAllSlots);
 exports.slotRoute = router;

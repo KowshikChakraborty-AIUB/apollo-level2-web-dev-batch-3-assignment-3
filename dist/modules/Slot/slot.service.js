@@ -66,6 +66,16 @@ const createSlotsIntoDB = (payload) => __awaiter(void 0, void 0, void 0, functio
     }
     return slots;
 });
+const getAllSlotsFromDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    const { date, roomId } = query;
+    const roomData = yield room_model_1.Room.findById(roomId);
+    if ((roomData === null || roomData === void 0 ? void 0 : roomData.isDeleted) === true) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Room deleted');
+    }
+    const result = yield slot_model_1.Slot.find({ room: roomId, date: date }).populate('room');
+    return result;
+});
 exports.SlotServices = {
     createSlotsIntoDB,
+    getAllSlotsFromDB,
 };
