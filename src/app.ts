@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import router from './Routes';
 import globalErrorhandler from './Middlewares/globalErrorhandler';
+import notFound from './Middlewares/notFoundRoute';
 const app = express()
 
 //parsers
@@ -17,5 +18,8 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 app.use(globalErrorhandler)
+
+//not found route
+app.use(notFound)
 
 export default app;
