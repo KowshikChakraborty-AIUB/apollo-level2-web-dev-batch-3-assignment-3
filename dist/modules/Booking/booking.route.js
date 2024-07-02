@@ -10,4 +10,5 @@ const booking_validation_1 = __importDefault(require("./booking.validation"));
 const booking_controller_1 = require("./booking.controller");
 const router = (0, express_1.Router)();
 router.post('/', (0, validateRequest_1.default)(booking_validation_1.default), booking_controller_1.BookingControllers.createBooking);
+router.get('/', booking_controller_1.BookingControllers.getAllBookings);
 exports.bookingRoute = router;

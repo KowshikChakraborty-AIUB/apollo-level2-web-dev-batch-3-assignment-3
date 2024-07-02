@@ -92,6 +92,14 @@ const createBookingIntoDB = async (payload: TBooking) => {
 };
 
 
+const getAllBookingsFromDB = async () => {
+    const result = await Booking.find().populate('slots').populate('room').populate('user', '-password')
+
+    return result;
+};
+
+
 export const BookingServices = {
     createBookingIntoDB,
+    getAllBookingsFromDB
 }

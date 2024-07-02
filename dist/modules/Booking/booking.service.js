@@ -67,6 +67,11 @@ const createBookingIntoDB = (payload) => __awaiter(void 0, void 0, void 0, funct
         throw new Error('Failed to create booking');
     }
 });
+const getAllBookingsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield booking_model_1.Booking.find().populate('slots').populate('room').populate('user', '-password');
+    return result;
+});
 exports.BookingServices = {
     createBookingIntoDB,
+    getAllBookingsFromDB
 };
