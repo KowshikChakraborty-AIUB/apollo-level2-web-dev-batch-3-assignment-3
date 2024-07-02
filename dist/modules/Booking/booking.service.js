@@ -46,6 +46,9 @@ const createBookingIntoDB = (payload) => __awaiter(void 0, void 0, void 0, funct
         const pricePerSlot = roomData.pricePerSlot;
         const totalAmount = payload.slots.length * pricePerSlot;
         const booking = yield booking_model_1.Booking.create([{ date, slots, room, user, totalAmount: totalAmount, isConfirmed }], { session });
+        //console.log(booking[0]);
+        const bookingId = booking[0]._id;
+        //since to pass a `session` to `Model.create()` in Mongoose, we **must** pass an array as the first argument, we can get the booking info by accessing the first element (0) of the array since we will get only one booking in the array everytime while creating. 
         if (!booking.length) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to create booking');
         }
@@ -53,9 +56,10 @@ const createBookingIntoDB = (payload) => __awaiter(void 0, void 0, void 0, funct
         if (!updatedSlotsAfterBooking) {
             throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Failed to update requested slots after booking');
         }
+        const seeBookingDetailsAfterCreating = yield booking_model_1.Booking.findById(bookingId, null, { session }).populate('slots').populate('room').populate('user', '-password');
         yield session.commitTransaction();
         yield session.endSession();
-        return booking;
+        return seeBookingDetailsAfterCreating;
     }
     catch (err) {
         yield session.abortTransaction();

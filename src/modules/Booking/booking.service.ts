@@ -17,7 +17,7 @@ const createBookingIntoDB = async (payload: TBooking) => {
         session.startTransaction();
 
         const slotsData = await Slot.find(
-            { _id: { $in: slots }, isBooked: false}, null, {session}
+            { _id: { $in: slots }, isBooked: false }, null, { session }
         );
 
 
@@ -52,6 +52,13 @@ const createBookingIntoDB = async (payload: TBooking) => {
 
         const booking = await Booking.create([{ date, slots, room, user, totalAmount: totalAmount, isConfirmed }], { session });
 
+        //console.log(booking[0]);
+
+
+        const bookingId = booking[0]._id;
+        //since to pass a `session` to `Model.create()` in Mongoose, we **must** pass an array as the first argument, we can get the booking info by accessing the first element (0) of the array since we will get only one booking in the array everytime while creating. 
+
+
 
         if (!booking.length) {
             throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create booking');
@@ -70,11 +77,12 @@ const createBookingIntoDB = async (payload: TBooking) => {
             );
         }
 
+        const seeBookingDetailsAfterCreating = await Booking.findById(bookingId, null, { session }).populate('slots').populate('room').populate('user', '-password')
 
         await session.commitTransaction();
         await session.endSession();
 
-        return booking;
+        return seeBookingDetailsAfterCreating;
 
     } catch (err) {
         await session.abortTransaction();
