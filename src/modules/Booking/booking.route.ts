@@ -13,4 +13,6 @@ router.post(
 
 router.get('/', BookingControllers.getAllBookings);
 
+router.put('/:id', BookingControllers.updateBooking);
+
 export const bookingRoute = router;
