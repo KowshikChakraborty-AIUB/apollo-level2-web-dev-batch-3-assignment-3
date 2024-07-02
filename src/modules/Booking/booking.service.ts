@@ -119,9 +119,30 @@ const updateBookingIntoDB = async (id: string) => {
     return result;
 };
 
+const deleteBookingFromDB = async (id: string) => {
+    const bookingData = await Booking.findById(id);
+
+    if (!bookingData) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Booking info not found');
+    }
+
+    if (bookingData.isDeleted) {
+        throw new AppError(httpStatus.BAD_REQUEST, 'Booking has already been deleted');
+    }
+
+    const result = await Booking.findByIdAndUpdate(id, { isDeleted: true },
+        {
+            new: true,
+            runValidators: true,
+        },
+    );
+    return result;
+};
+
 
 export const BookingServices = {
     createBookingIntoDB,
     getAllBookingsFromDB,
-    updateBookingIntoDB
+    updateBookingIntoDB,
+    deleteBookingFromDB
 }

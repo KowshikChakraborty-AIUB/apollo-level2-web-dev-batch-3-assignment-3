@@ -85,8 +85,23 @@ const updateBookingIntoDB = (id) => __awaiter(void 0, void 0, void 0, function* 
     });
     return result;
 });
+const deleteBookingFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const bookingData = yield booking_model_1.Booking.findById(id);
+    if (!bookingData) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Booking info not found');
+    }
+    if (bookingData.isDeleted) {
+        throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Booking has already been deleted');
+    }
+    const result = yield booking_model_1.Booking.findByIdAndUpdate(id, { isDeleted: true }, {
+        new: true,
+        runValidators: true,
+    });
+    return result;
+});
 exports.BookingServices = {
     createBookingIntoDB,
     getAllBookingsFromDB,
-    updateBookingIntoDB
+    updateBookingIntoDB,
+    deleteBookingFromDB
 };

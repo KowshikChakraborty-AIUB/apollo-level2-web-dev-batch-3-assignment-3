@@ -48,8 +48,19 @@ const updateBooking = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
         data: result,
     });
 }));
+const deleteBooking = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield booking_service_1.BookingServices.deleteBookingFromDB(id);
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: 200,
+        message: 'Booking deleted successfully',
+        data: result,
+    });
+}));
 exports.BookingControllers = {
     createBooking,
     getAllBookings,
-    updateBooking
+    updateBooking,
+    deleteBooking
 };
