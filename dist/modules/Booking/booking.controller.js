@@ -18,7 +18,7 @@ const sendResponse_1 = __importDefault(require("../../Utils/sendResponse"));
 const room_error_1 = __importDefault(require("../Room/room.error"));
 const booking_service_1 = require("./booking.service");
 const createBooking = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield booking_service_1.BookingServices.createBookingIntoDB(req.body);
+    const result = yield booking_service_1.BookingServices.createBookingIntoDB(req.body, req.user);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: 200,

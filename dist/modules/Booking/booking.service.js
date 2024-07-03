@@ -20,11 +20,13 @@ const http_status_1 = __importDefault(require("http-status"));
 const user_model_1 = require("../User/user.model");
 const slot_model_1 = require("../Slot/slot.model");
 const booking_model_1 = require("./booking.model");
-const createBookingIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+const createBookingIntoDB = (payload, jwtPayload) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const session = yield mongoose_1.default.startSession();
     const { date, slots, room, user, isConfirmed } = payload;
     try {
         session.startTransaction();
+        const userDataFromJwtPayload = yield user_model_1.User.find({ email: jwtPayload === null || jwtPayload === void 0 ? void 0 : jwtPayload.userEmail }, null, { session });
         const slotsData = yield slot_model_1.Slot.find({ _id: { $in: slots }, isBooked: false }, null, { session });
         if (!slotsData) {
             throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Requested slots not found');
@@ -45,6 +47,14 @@ const createBookingIntoDB = (payload) => __awaiter(void 0, void 0, void 0, funct
         }
         const pricePerSlot = roomData.pricePerSlot;
         const totalAmount = payload.slots.length * pricePerSlot;
+        if (user != ((_a = userDataFromJwtPayload[0]) === null || _a === void 0 ? void 0 : _a._id)) {
+            return {
+                success: false,
+                statusCode: http_status_1.default.BAD_REQUEST,
+                message: 'You have no access to create bookings for other users',
+            };
+        }
+        // console.log(typeof user, typeof userDataFromJwtPayload[0]?._id, user == userDataFromJwtPayload[0]?._id);
         const booking = yield booking_model_1.Booking.create([{ date, slots, room, user, totalAmount: totalAmount, isConfirmed }], { session });
         //console.log(booking[0]);
         const bookingId = booking[0]._id;

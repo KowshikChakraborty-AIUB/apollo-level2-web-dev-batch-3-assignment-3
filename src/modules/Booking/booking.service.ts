@@ -6,8 +6,9 @@ import httpStatus from "http-status";
 import { User } from "../User/user.model";
 import { Slot } from "../Slot/slot.model";
 import { Booking } from "./booking.model";
+import { JwtPayload } from "jsonwebtoken";
 
-const createBookingIntoDB = async (payload: TBooking) => {
+const createBookingIntoDB = async (payload: TBooking, jwtPayload: JwtPayload) => {
 
     const session = await mongoose.startSession();
 
@@ -15,6 +16,8 @@ const createBookingIntoDB = async (payload: TBooking) => {
 
     try {
         session.startTransaction();
+
+        const userDataFromJwtPayload = await User.find({ email: jwtPayload?.userEmail }, null, { session });
 
         const slotsData = await Slot.find(
             { _id: { $in: slots }, isBooked: false }, null, { session }
@@ -48,6 +51,18 @@ const createBookingIntoDB = async (payload: TBooking) => {
 
         const pricePerSlot = roomData.pricePerSlot;
         const totalAmount = payload.slots.length * pricePerSlot;
+
+        if (user != userDataFromJwtPayload[0]?._id) {
+            return {
+                success: false,
+                statusCode: httpStatus.BAD_REQUEST,
+                message: 'You have no access to create bookings for other users',
+            };
+
+        }
+
+        // console.log(typeof user, typeof userDataFromJwtPayload[0]?._id, user == userDataFromJwtPayload[0]?._id);
+
 
 
         const booking = await Booking.create([{ date, slots, room, user, totalAmount: totalAmount, isConfirmed }], { session });

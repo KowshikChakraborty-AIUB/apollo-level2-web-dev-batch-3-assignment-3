@@ -12,7 +12,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
     return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const token = req.headers.authorization?.split(' ')[1];
         //console.log(token.split(' ')[1]);
-        
+
 
         // checking if the token is missing
         if (!token) {
@@ -29,10 +29,10 @@ const auth = (...requiredRoles: TUserRole[]) => {
             config.jwt_access_secret as string,
         ) as JwtPayload;
 
-        const { role, userId } = decoded;
+        const { role, userEmail } = decoded;
 
         // checking if the user is exist
-        const user = await User.isUserExistsByEmail(userId);
+        const user = await User.isUserExistsByEmail(userEmail);
 
         if (!user) {
             throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
