@@ -81,6 +81,11 @@ const getAllBookingsFromDB = () => __awaiter(void 0, void 0, void 0, function* (
     const result = yield booking_model_1.Booking.find().populate('slots').populate('room').populate('user', '-password');
     return result;
 });
+const getSpecificUserBookingsFromDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const userDataFromJwtPayload = yield user_model_1.User.findOne({ email: payload === null || payload === void 0 ? void 0 : payload.userEmail });
+    const result = yield booking_model_1.Booking.find({ user: userDataFromJwtPayload === null || userDataFromJwtPayload === void 0 ? void 0 : userDataFromJwtPayload._id }).populate('slots').populate('room').populate('user', '-password');
+    return result;
+});
 const updateBookingIntoDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const bookingData = yield booking_model_1.Booking.findById(id);
     if (!bookingData) {
@@ -112,6 +117,7 @@ const deleteBookingFromDB = (id) => __awaiter(void 0, void 0, void 0, function* 
 exports.BookingServices = {
     createBookingIntoDB,
     getAllBookingsFromDB,
+    getSpecificUserBookingsFromDB,
     updateBookingIntoDB,
     deleteBookingFromDB
 };

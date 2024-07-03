@@ -32,6 +32,22 @@ const getAllBookings = catchAsync(async (req, res) => {
 
 });
 
+const getSpecificUserBookings = catchAsync(async (req, res) => {
+    const result = await BookingServices.getSpecificUserBookingsFromDB(req.user);
+
+    if (result.length === 0) {
+        sendResponse(res, noDataFound('No Data Found'))
+    }
+
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: 'User bookings retrieved successfully',
+        data: result,
+    });
+
+});
+
 const updateBooking = catchAsync(async (req, res) => {
     const { id } = req.params;
     const result = await BookingServices.updateBookingIntoDB(id);
@@ -59,6 +75,7 @@ const deleteBooking = catchAsync(async (req, res) => {
 export const BookingControllers = {
     createBooking,
     getAllBookings,
+    getSpecificUserBookings,
     updateBooking,
     deleteBooking
 };

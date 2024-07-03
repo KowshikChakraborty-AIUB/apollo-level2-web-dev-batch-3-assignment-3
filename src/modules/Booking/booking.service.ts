@@ -114,6 +114,15 @@ const getAllBookingsFromDB = async () => {
 };
 
 
+const getSpecificUserBookingsFromDB = async (payload: JwtPayload) => {
+    const userDataFromJwtPayload = await User.findOne({ email: payload?.userEmail });
+
+    const result = await Booking.find({ user: userDataFromJwtPayload?._id }).populate('slots').populate('room').populate('user', '-password')
+
+    return result;
+};
+
+
 const updateBookingIntoDB = async (id: string) => {
     const bookingData = await Booking.findById(id);
 
@@ -158,6 +167,7 @@ const deleteBookingFromDB = async (id: string) => {
 export const BookingServices = {
     createBookingIntoDB,
     getAllBookingsFromDB,
+    getSpecificUserBookingsFromDB,
     updateBookingIntoDB,
     deleteBookingFromDB
 }
