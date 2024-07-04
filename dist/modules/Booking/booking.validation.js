@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BookingValidations = void 0;
 const zod_1 = require("zod");
 const booking_constant_1 = require("./booking.constant");
 const createBookingValidationSchema = zod_1.z.object({
@@ -10,4 +11,10 @@ const createBookingValidationSchema = zod_1.z.object({
         user: zod_1.z.string(),
     }),
 });
-exports.default = createBookingValidationSchema;
+const updateBookingValidationSchema = zod_1.z.object({
+    isConfirmed: zod_1.z.enum(['unconfirmed', 'confirmed', 'canceled']),
+});
+exports.BookingValidations = {
+    createBookingValidationSchema,
+    updateBookingValidationSchema
+};

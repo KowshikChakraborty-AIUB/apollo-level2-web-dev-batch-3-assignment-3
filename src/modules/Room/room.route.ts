@@ -21,10 +21,11 @@ router.get('/', RoomControllers.getAllRoom);
 
 router.put(
     '/:id',
+    auth(USER_ROLE.admin),
     validateRequest(RoomValidations.updateRoomValidationSchema),
     RoomControllers.updateRoom,
 );
 
-router.delete('/:id', RoomControllers.deleteRoom);
+router.delete('/:id', auth(USER_ROLE.admin), RoomControllers.deleteRoom);
 
 export const roomRoute = router;
