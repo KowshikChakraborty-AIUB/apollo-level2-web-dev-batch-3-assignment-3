@@ -50,7 +50,7 @@ const getSpecificUserBookings = catchAsync(async (req, res) => {
 
 const updateBooking = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const result = await BookingServices.updateBookingIntoDB(id);
+    const result = await BookingServices.updateBookingIntoDB(id, req.body);
 
     sendResponse(res, {
         success: true,

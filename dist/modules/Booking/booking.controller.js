@@ -52,7 +52,7 @@ const getSpecificUserBookings = (0, catchAsync_1.default)((req, res) => __awaite
 }));
 const updateBooking = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const result = yield booking_service_1.BookingServices.updateBookingIntoDB(id);
+    const result = yield booking_service_1.BookingServices.updateBookingIntoDB(id, req.body);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: 200,

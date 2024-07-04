@@ -86,15 +86,16 @@ const getSpecificUserBookingsFromDB = (payload) => __awaiter(void 0, void 0, voi
     const result = yield booking_model_1.Booking.find({ user: userDataFromJwtPayload === null || userDataFromJwtPayload === void 0 ? void 0 : userDataFromJwtPayload._id }).populate('slots').populate('room').populate('user', '-password');
     return result;
 });
-const updateBookingIntoDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+const updateBookingIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
     const bookingData = yield booking_model_1.Booking.findById(id);
+    const { isConfirmed } = payload;
     if (!bookingData) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Booking info not found');
     }
     if (bookingData.isDeleted) {
         throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Booking has already been deleted');
     }
-    const result = yield booking_model_1.Booking.findByIdAndUpdate(id, { isConfirmed: 'confirmed' }, {
+    const result = yield booking_model_1.Booking.findByIdAndUpdate(id, { isConfirmed: isConfirmed }, {
         new: true,
         runValidators: true,
     });

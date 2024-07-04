@@ -12,7 +12,7 @@ const createBookingValidationSchema = zod_1.z.object({
     }),
 });
 const updateBookingValidationSchema = zod_1.z.object({
-    isConfirmed: zod_1.z.enum(['unconfirmed', 'confirmed', 'canceled']),
+    isConfirmed: zod_1.z.enum(['unconfirmed', 'confirmed', 'canceled']).optional(),
 });
 exports.BookingValidations = {
     createBookingValidationSchema,

@@ -123,8 +123,10 @@ const getSpecificUserBookingsFromDB = async (payload: JwtPayload) => {
 };
 
 
-const updateBookingIntoDB = async (id: string) => {
+const updateBookingIntoDB = async (id: string, payload: TBooking) => {
     const bookingData = await Booking.findById(id);
+
+    const { isConfirmed } = payload;
 
     if (!bookingData) {
         throw new AppError(httpStatus.NOT_FOUND, 'Booking info not found');
@@ -134,7 +136,7 @@ const updateBookingIntoDB = async (id: string) => {
         throw new AppError(httpStatus.BAD_REQUEST, 'Booking has already been deleted');
     }
 
-    const result = await Booking.findByIdAndUpdate(id, { isConfirmed: 'confirmed' },
+    const result = await Booking.findByIdAndUpdate(id, { isConfirmed: isConfirmed },
         {
             new: true,
             runValidators: true,
