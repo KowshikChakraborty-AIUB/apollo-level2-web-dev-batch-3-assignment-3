@@ -17,6 +17,10 @@ const http_status_1 = __importDefault(require("http-status"));
 const room_model_1 = require("./room.model");
 const AppError_1 = __importDefault(require("../../Errors/AppError"));
 const createRoomIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const roomData = yield room_model_1.Room.find({ floorNo: payload.floorNo });
+    if (roomData[0]) {
+        throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Room already exist');
+    }
     const result = room_model_1.Room.create(payload);
     return result;
 });
@@ -25,7 +29,7 @@ const getSingleRoomFromDB = (id) => __awaiter(void 0, void 0, void 0, function* 
     return result;
 });
 const getAllRoomFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = room_model_1.Room.find();
+    const result = yield room_model_1.Room.find();
     return result;
 });
 const updateRoomIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {

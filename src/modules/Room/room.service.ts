@@ -4,6 +4,11 @@ import { Room } from './room.model';
 import AppError from '../../Errors/AppError';
 
 const createRoomIntoDB = async (payload: TRoom) => {
+    const roomData = await Room.find({ floorNo: payload.floorNo })
+    if (roomData[0]) {
+        throw new AppError(httpStatus.BAD_REQUEST, 'Room already exist');
+    }
+
     const result = Room.create(payload);
     return result;
 };
@@ -14,7 +19,7 @@ const getSingleRoomFromDB = async (id: string) => {
 };
 
 const getAllRoomFromDB = async () => {
-    const result = Room.find();
+    const result = await Room.find();
     return result;
 };
 
