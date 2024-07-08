@@ -16,7 +16,12 @@ const createSlots = catchAsync(async (req, res) => {
 });
 
 const getAllSlots = catchAsync(async (req, res) => {
-    const result = await SlotServices.getAllSlotsFromDB(req.query);
+    let result = await SlotServices.getAllSlotsFromDB(req.query);
+
+    if (req.query.date === undefined && req.query.roomId === undefined) {
+        result = await SlotServices.getAllSlotsThatAreNotBookedFromDB();
+    }
+
 
     if (result.length === 0) {
         sendResponse(res, noDataFound('No Data Found'))
@@ -30,6 +35,7 @@ const getAllSlots = catchAsync(async (req, res) => {
     });
 
 });
+
 
 
 export const SlotControllers = {

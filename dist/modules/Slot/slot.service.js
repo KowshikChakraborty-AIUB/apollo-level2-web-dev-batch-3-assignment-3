@@ -75,7 +75,12 @@ const getAllSlotsFromDB = (query) => __awaiter(void 0, void 0, void 0, function*
     const result = yield slot_model_1.Slot.find({ room: roomId, date: date }).populate('room');
     return result;
 });
+const getAllSlotsThatAreNotBookedFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield slot_model_1.Slot.find({ isBooked: false }).populate('room');
+    return result;
+});
 exports.SlotServices = {
     createSlotsIntoDB,
     getAllSlotsFromDB,
+    getAllSlotsThatAreNotBookedFromDB,
 };

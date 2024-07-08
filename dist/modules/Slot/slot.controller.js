@@ -27,7 +27,10 @@ const createSlots = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
     });
 }));
 const getAllSlots = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield slot_service_1.SlotServices.getAllSlotsFromDB(req.query);
+    let result = yield slot_service_1.SlotServices.getAllSlotsFromDB(req.query);
+    if (req.query.date === undefined && req.query.roomId === undefined) {
+        result = yield slot_service_1.SlotServices.getAllSlotsThatAreNotBookedFromDB();
+    }
     if (result.length === 0) {
         (0, sendResponse_1.default)(res, (0, room_error_1.default)('No Data Found'));
     }

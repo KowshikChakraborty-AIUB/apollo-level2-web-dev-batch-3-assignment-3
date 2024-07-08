@@ -96,8 +96,14 @@ const getAllSlotsFromDB = async (query: Record<string, unknown>) => {
     return result;
 };
 
+const getAllSlotsThatAreNotBookedFromDB = async () => {
+    const result = await Slot.find({ isBooked: false }).populate('room');
+    return result;
+};
+
 
 export const SlotServices = {
     createSlotsIntoDB,
     getAllSlotsFromDB,
+    getAllSlotsThatAreNotBookedFromDB,
 };
