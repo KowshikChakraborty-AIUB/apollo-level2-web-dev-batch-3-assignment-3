@@ -43,12 +43,16 @@ Or you can simply go to the application folder and just delete the **.git** fold
 
 # Technology Used
 
-1. **Backend:** Node, Express, MongoDB and Mongoose, dotenv (for local environment variables)
+1. **Backend:** Node, Express, Cors (cross origin policy), MongoDB and Mongoose, dotenv (for local environment variables).
 
-2. **Token authentication & authorization:** Jason Web Token (JWT)
+2. **Token authentication & authorization:** Jason Web Token (JWT).
 
-3. **Schema declaration and validation library:** Zod validation
+3. **Schema declaration and validation library:** Zod validation.
 
-4. **Discover problems and create linting rules:** eslint
+4. **Discover problems and create linting rules:** eslint.
 
-5. **Interact with HTTP status codes:** http-status
+5. **Interact with HTTP status codes:** http-status.
+
+6. **Password hashing:** bcrypt.
+
+7. **Parsing cookies from requests:** cookie-parser.
