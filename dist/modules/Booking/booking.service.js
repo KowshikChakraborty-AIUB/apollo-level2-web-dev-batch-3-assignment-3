@@ -48,11 +48,7 @@ const createBookingIntoDB = (payload, jwtPayload) => __awaiter(void 0, void 0, v
         const pricePerSlot = roomData.pricePerSlot;
         const totalAmount = payload.slots.length * pricePerSlot;
         if (user != ((_a = userDataFromJwtPayload[0]) === null || _a === void 0 ? void 0 : _a._id)) {
-            return {
-                success: false,
-                statusCode: http_status_1.default.BAD_REQUEST,
-                message: 'You have no access to create bookings for other users',
-            };
+            throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'You have no access to create bookings for other users');
         }
         // console.log(typeof user, typeof userDataFromJwtPayload[0]?._id, user == userDataFromJwtPayload[0]?._id);
         const booking = yield booking_model_1.Booking.create([{ date, slots, room, user, totalAmount: totalAmount, isConfirmed }], { session });

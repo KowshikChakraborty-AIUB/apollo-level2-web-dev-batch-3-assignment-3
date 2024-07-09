@@ -53,12 +53,7 @@ const createBookingIntoDB = async (payload: TBooking, jwtPayload: JwtPayload) =>
         const totalAmount = payload.slots.length * pricePerSlot;
 
         if (user != userDataFromJwtPayload[0]?._id) {
-            return {
-                success: false,
-                statusCode: httpStatus.BAD_REQUEST,
-                message: 'You have no access to create bookings for other users',
-            };
-
+            throw new AppError(httpStatus.BAD_REQUEST, 'You have no access to create bookings for other users',)
         }
 
         // console.log(typeof user, typeof userDataFromJwtPayload[0]?._id, user == userDataFromJwtPayload[0]?._id);
