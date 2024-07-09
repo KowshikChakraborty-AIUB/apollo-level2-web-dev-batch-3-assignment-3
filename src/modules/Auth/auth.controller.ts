@@ -1,13 +1,16 @@
 import httpStatus from 'http-status';
 import { AuthServices } from './auth.service';
 import catchAsync from '../../Utils/catchAsync';
+import { User } from '../User/user.model';
 
 const loginUser = catchAsync(async (req, res) => {
     const result = await AuthServices.loginUser(req.body);
-    const { user, accessToken } = result;
-    
+    const { accessToken } = result;
 
-    const { _id, name, email, phone, address, role } = user;
+    const userLoginInfo = await User.find({ email: req.body.email })
+
+
+    const { _id, name, email, phone, address, role } = userLoginInfo[0];
 
     res.status(httpStatus.OK).json({
         success: true,

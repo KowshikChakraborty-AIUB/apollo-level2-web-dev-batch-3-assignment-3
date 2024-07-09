@@ -16,10 +16,12 @@ exports.AuthControllers = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const auth_service_1 = require("./auth.service");
 const catchAsync_1 = __importDefault(require("../../Utils/catchAsync"));
+const user_model_1 = require("../User/user.model");
 const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_service_1.AuthServices.loginUser(req.body);
-    const { user, accessToken } = result;
-    const { _id, name, email, phone, address, role } = user;
+    const { accessToken } = result;
+    const userLoginInfo = yield user_model_1.User.find({ email: req.body.email });
+    const { _id, name, email, phone, address, role } = userLoginInfo[0];
     res.status(http_status_1.default.OK).json({
         success: true,
         statusCode: http_status_1.default.OK,

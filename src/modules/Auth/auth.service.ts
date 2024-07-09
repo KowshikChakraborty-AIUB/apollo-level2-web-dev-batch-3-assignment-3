@@ -8,10 +8,10 @@ import { User } from '../User/user.model';
 const loginUser = async (payload: TLoginUser) => {
     // checking if the user is exist
     const user = await User.isUserExistsByEmail(payload.email);
-    
+
 
     if (!user) {
-        throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
+        throw new AppError(httpStatus.NOT_FOUND, 'User is not found');
     }
 
     //checking if the password is correct
@@ -34,7 +34,6 @@ const loginUser = async (payload: TLoginUser) => {
 
     return {
         accessToken,
-        user,
     };
 
 };

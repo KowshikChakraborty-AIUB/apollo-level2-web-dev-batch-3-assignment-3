@@ -22,7 +22,7 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     // checking if the user is exist
     const user = yield user_model_1.User.isUserExistsByEmail(payload.email);
     if (!user) {
-        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'This user is not found !');
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'User is not found');
     }
     //checking if the password is correct
     if (!(yield user_model_1.User.isPasswordMatched(payload === null || payload === void 0 ? void 0 : payload.password, user === null || user === void 0 ? void 0 : user.password)))
@@ -35,7 +35,6 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const accessToken = (0, auth_utils_1.createToken)(jwtPayload, config_1.default.jwt_access_secret, config_1.default.jwt_access_expires_in);
     return {
         accessToken,
-        user,
     };
 });
 exports.AuthServices = {
