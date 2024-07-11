@@ -26,7 +26,7 @@ const auth = (...requiredRoles) => {
         //console.log(token.split(' ')[1]);
         // checking if the token is missing
         if (!token) {
-            (0, sendAuthResponse_1.default)(res, {
+            return (0, sendAuthResponse_1.default)(res, {
                 success: false,
                 statusCode: http_status_1.default.UNAUTHORIZED,
                 message: 'You have no access to this route',
@@ -41,7 +41,7 @@ const auth = (...requiredRoles) => {
             throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'This user is not found !');
         }
         if (requiredRoles && !requiredRoles.includes(role)) {
-            (0, sendAuthResponse_1.default)(res, {
+            return (0, sendAuthResponse_1.default)(res, {
                 success: false,
                 statusCode: http_status_1.default.UNAUTHORIZED,
                 message: 'You have no access to this route',
