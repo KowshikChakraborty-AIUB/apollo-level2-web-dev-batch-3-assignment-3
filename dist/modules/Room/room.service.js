@@ -17,7 +17,7 @@ const http_status_1 = __importDefault(require("http-status"));
 const room_model_1 = require("./room.model");
 const AppError_1 = __importDefault(require("../../Errors/AppError"));
 const createRoomIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const roomData = yield room_model_1.Room.find({ floorNo: payload.floorNo });
+    const roomData = yield room_model_1.Room.find({ roomNo: payload.roomNo });
     if (roomData[0]) {
         throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Room already exist');
     }
