@@ -1,17 +1,18 @@
 import httpStatus from "http-status";
 import catchAsync from "../../Utils/catchAsync";
 import { UserServices } from "./user.service";
-import sendResponse from "../../Utils/sendResponse";
+//import sendResponse from "../../Utils/sendResponse";
 
 const registerUser = catchAsync(async (req, res) => {
-    const result = await UserServices.registerUserIntoDB(req.body);
-    const { _id, name, email, phone, role, address} = result;
+    const { result, accessToken } = await UserServices.registerUserIntoDB(req.body);
+    //const { _id, name, email, phone, role, address} = result;
 
-    sendResponse(res, {
+    res.status(httpStatus.OK).json({
         success: true,
         statusCode: httpStatus.OK,
         message: 'User registered successfully',
-        data: {_id, name, email, phone, role, address},
+        data: result,
+        token: accessToken
     });
 });
 
