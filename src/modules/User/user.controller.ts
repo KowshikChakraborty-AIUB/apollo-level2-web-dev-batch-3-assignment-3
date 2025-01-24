@@ -5,13 +5,13 @@ import { UserServices } from "./user.service";
 
 const registerUser = catchAsync(async (req, res) => {
     const { result, accessToken } = await UserServices.registerUserIntoDB(req.body);
-    //const { _id, name, email, phone, role, address} = result;
+    const { _id, name, email, phone, role, address } = result;
 
     res.status(httpStatus.OK).json({
         success: true,
         statusCode: httpStatus.OK,
         message: 'User registered successfully',
-        data: result,
+        data: { _id, name, email, phone, role, address },
         token: accessToken
     });
 });
