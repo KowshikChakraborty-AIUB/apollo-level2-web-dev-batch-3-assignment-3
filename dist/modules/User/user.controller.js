@@ -16,15 +16,17 @@ exports.UserControllers = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const catchAsync_1 = __importDefault(require("../../Utils/catchAsync"));
 const user_service_1 = require("./user.service");
-const sendResponse_1 = __importDefault(require("../../Utils/sendResponse"));
+//import sendResponse from "../../Utils/sendResponse";
 const registerUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_service_1.UserServices.registerUserIntoDB(req.body);
-    const { _id, name, email, phone, role, address } = result;
-    (0, sendResponse_1.default)(res, {
+    const { _id, name, email, phone, role, address } = result.result;
+    const token = result.accessToken;
+    res.status(http_status_1.default.OK).json({
         success: true,
         statusCode: http_status_1.default.OK,
         message: 'User registered successfully',
         data: { _id, name, email, phone, role, address },
+        token: token
     });
 }));
 exports.UserControllers = {
