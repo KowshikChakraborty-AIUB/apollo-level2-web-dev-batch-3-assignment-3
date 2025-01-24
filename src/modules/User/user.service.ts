@@ -6,10 +6,10 @@ import { createToken } from '../Auth/auth.utils';
 import config from '../../config';
 
 const registerUserIntoDB = async (payload: TUser) => {
-  const result = User.create(payload);
+  const result = await User.create(payload);
 
   // checking if the user is exist
-  const user = await User.isUserExistsByEmail(payload.email);
+  const user = await User?.isUserExistsByEmail(payload.email);
 
 
   if (!user) {
