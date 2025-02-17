@@ -6,6 +6,7 @@ export type TUser = {
     email: string;
     password: string;
     phone: string;
+    profileImg?: string;
     address: string;
     role: 'user' | 'admin';
 };

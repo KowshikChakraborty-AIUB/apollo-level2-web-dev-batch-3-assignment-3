@@ -12,6 +12,7 @@ const userValidationSchema = z.object({
         phone: z.string({
             required_error: 'Phone number is required',
         }),
+        profileImg: z.string().url('Invalid URL').optional(),
         address: z.string({
             required_error: 'Address is required',
         }),
