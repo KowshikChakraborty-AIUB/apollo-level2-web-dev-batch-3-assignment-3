@@ -37,6 +37,12 @@ const registerUserIntoDB = async (payload: TUser) => {
 
 };
 
+const getUserByEmailIdFromDB = async (email: string) => {
+  const result = await User.findOne({ email: email }).select('-password');
+  return result;
+};
+
 export const UserServices = {
   registerUserIntoDB,
+  getUserByEmailIdFromDB
 };

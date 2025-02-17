@@ -19,5 +19,6 @@ router.post(
     AuthControllers.loginUser,
 );
 
+router.get('/userInfoByEmail/:email', UserControllers.getUserByEmailId);
 
 export const userRoute = router;
