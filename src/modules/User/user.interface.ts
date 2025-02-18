@@ -9,6 +9,7 @@ export type TUser = {
     profileImg?: string;
     address: string;
     role: 'user' | 'admin';
+    isDeleted: boolean
 };
 
 export interface UserModel extends Model<TUser> {

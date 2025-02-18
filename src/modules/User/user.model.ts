@@ -34,9 +34,14 @@ const userSchema = new Schema<TUser, UserModel>({
         type: String,
         enum: ['user', 'admin'],
     },
+    isDeleted: { type: Boolean, default: false }
 });
 
 userSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) {
+        return next();
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const user = this; // doc
     // hashing password and save into DB
@@ -54,7 +59,7 @@ userSchema.post('save', function (doc, next) {
 });
 
 userSchema.statics.isUserExistsByEmail = async function (email: string) {
-    return await User.findOne({ email });
+    return await User.findOne({ email, isDeleted: { $ne: true } });
 };
 
 userSchema.statics.isPasswordMatched = async function (

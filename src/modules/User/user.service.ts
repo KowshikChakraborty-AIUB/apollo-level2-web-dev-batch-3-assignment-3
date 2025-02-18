@@ -42,7 +42,32 @@ const getUserByEmailIdFromDB = async (email: string) => {
   return result;
 };
 
+const updateUserByEmailId = async (email: string, payload: Partial<TUser>) => {
+  const userData = await User.findOne({ email: email });
+
+  if (!userData) {
+    throw new AppError(httpStatus.NOT_FOUND, 'This user is not found');
+  }
+  const updatedUser = await User.findOneAndUpdate(
+    { email },
+    { $set: payload },
+    { new: true, runValidators: true },
+  );
+
+  return updatedUser;
+};
+
+const deleteUserFromDB = async (id: string) => {
+  return await User.findByIdAndUpdate(
+    id,
+    { isDeleted: true },
+    { new: true, upsert: true }
+  );
+};
+
 export const UserServices = {
   registerUserIntoDB,
-  getUserByEmailIdFromDB
+  getUserByEmailIdFromDB,
+  updateUserByEmailId,
+  deleteUserFromDB
 };
