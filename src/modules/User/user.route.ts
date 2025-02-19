@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { UserControllers } from './user.controller';
 import validateRequest from '../../Middlewares/validateRequest';
-import loginValidationSchema from '../Auth/auth.validation';
+import { changeUserPasswordValidationSchema, loginValidationSchema } from '../Auth/auth.validation';
 import { AuthControllers } from '../Auth/auth.controller';
 import { updateUserValidationSchema, userValidationSchema } from './user.validaton';
 import auth from '../../Middlewares/auth';
@@ -27,6 +27,13 @@ router.put('/updateUserProfile/:email',
     auth(USER_ROLE.user, USER_ROLE.admin),
     validateRequest(updateUserValidationSchema),
     UserControllers.updateUserByEmailId,
+);
+
+router.post(
+    '/changeUserPassword',
+    auth(USER_ROLE.user, USER_ROLE.admin),
+    validateRequest(changeUserPasswordValidationSchema),
+    AuthControllers.changeUserPassword,
 );
 
 router.put("/deleteUser/:userId",

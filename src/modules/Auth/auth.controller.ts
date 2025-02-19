@@ -2,6 +2,7 @@ import httpStatus from 'http-status';
 import { AuthServices } from './auth.service';
 import catchAsync from '../../Utils/catchAsync';
 import { User } from '../User/user.model';
+import sendResponse from '../../Utils/sendResponse';
 
 const loginUser = catchAsync(async (req, res) => {
     const result = await AuthServices.loginUser(req.body);
@@ -21,6 +22,19 @@ const loginUser = catchAsync(async (req, res) => {
     });
 });
 
+const changeUserPassword = catchAsync(async (req, res) => {
+
+    const result = await AuthServices.changeUserPassword(req.user, req.body);
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: result.message,
+        data: result,
+    });
+});
+
 export const AuthControllers = {
     loginUser,
+    changeUserPassword
 };
