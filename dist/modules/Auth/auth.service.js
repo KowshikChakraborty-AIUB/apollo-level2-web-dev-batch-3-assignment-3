@@ -18,6 +18,7 @@ const config_1 = __importDefault(require("../../config"));
 const auth_utils_1 = require("./auth.utils");
 const AppError_1 = __importDefault(require("../../Errors/AppError"));
 const user_model_1 = require("../User/user.model");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     // checking if the user is exist
     const user = yield user_model_1.User.isUserExistsByEmail(payload.email);
@@ -37,6 +38,31 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         accessToken,
     };
 });
+const changeUserPassword = (user, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const userData = yield user_model_1.User.isUserExistsByEmail(user === null || user === void 0 ? void 0 : user.userEmail);
+    if (!userData) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'This user is not found');
+    }
+    const isOldPasswordCorrect = yield bcrypt_1.default.compare(payload.oldPassword, userData.password);
+    if (!isOldPasswordCorrect) {
+        throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'Old password is not correct');
+    }
+    const isSamePassword = yield bcrypt_1.default.compare(payload.newPassword, userData.password);
+    if (isSamePassword) {
+        throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'New password cannot be same as old password');
+    }
+    const newHashedPassword = yield bcrypt_1.default.hash(payload.newPassword, Number(config_1.default.bcrypt_salt_rounds));
+    yield user_model_1.User.findOneAndUpdate({
+        email: user.userEmail,
+        role: user.role,
+    }, {
+        password: newHashedPassword,
+        needsPasswordChange: false,
+        passwordChangeAt: new Date(),
+    }, { new: true });
+    return { message: 'User password has been changed successfully' };
+});
 exports.AuthServices = {
     loginUser,
+    changeUserPassword
 };

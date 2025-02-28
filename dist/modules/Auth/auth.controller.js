@@ -17,6 +17,7 @@ const http_status_1 = __importDefault(require("http-status"));
 const auth_service_1 = require("./auth.service");
 const catchAsync_1 = __importDefault(require("../../Utils/catchAsync"));
 const user_model_1 = require("../User/user.model");
+const sendResponse_1 = __importDefault(require("../../Utils/sendResponse"));
 const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_service_1.AuthServices.loginUser(req.body);
     const { accessToken } = result;
@@ -30,6 +31,16 @@ const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void
         data: { _id, name, email, phone, address, role },
     });
 }));
+const changeUserPassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield auth_service_1.AuthServices.changeUserPassword(req.user, req.body);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: result.message,
+        data: result,
+    });
+}));
 exports.AuthControllers = {
     loginUser,
+    changeUserPassword
 };

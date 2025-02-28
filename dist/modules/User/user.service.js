@@ -37,6 +37,24 @@ const registerUserIntoDB = (payload) => __awaiter(void 0, void 0, void 0, functi
     };
     //return result;
 });
+const getUserByEmailIdFromDB = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_model_1.User.findOne({ email: email }).select('-password');
+    return result;
+});
+const updateUserByEmailId = (email, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const userData = yield user_model_1.User.findOne({ email: email });
+    if (!userData) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'This user is not found');
+    }
+    const updatedUser = yield user_model_1.User.findOneAndUpdate({ email }, { $set: payload }, { new: true, runValidators: true });
+    return updatedUser;
+});
+const deleteUserFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield user_model_1.User.findByIdAndUpdate(id, { isDeleted: true }, { new: true, upsert: true });
+});
 exports.UserServices = {
     registerUserIntoDB,
+    getUserByEmailIdFromDB,
+    updateUserByEmailId,
+    deleteUserFromDB
 };
