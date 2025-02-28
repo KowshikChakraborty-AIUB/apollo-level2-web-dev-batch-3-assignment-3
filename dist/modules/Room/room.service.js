@@ -29,7 +29,7 @@ const getSingleRoomFromDB = (id) => __awaiter(void 0, void 0, void 0, function* 
     return result;
 });
 const getAllRoomFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield room_model_1.Room.find();
+    const result = yield room_model_1.Room.find({ isDeleted: false });
     return result;
 });
 const updateRoomIntoDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
